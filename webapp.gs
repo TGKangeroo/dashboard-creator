@@ -145,7 +145,7 @@ function addDeadline(){
   var usr = params.user_name || params.user.name;
   
   postResponse(channel, deadline, usr, date,row,dashboard);
-  
+   removeAddDeadline();
 
 }
 
@@ -220,41 +220,7 @@ Logger.log("FROM HERE;" + request);
   Logger.log("JSON Stringy:" + JSON.stringify(request).indexOf("deadline_add"));
 //  Logger.log("JSON Stringy:" + JSON.parse(request).indexOf("deadline_add"));
 }
-function createDeadline() {
-  var payload = {
-    "text": "Would you like to create a deadline?",
-    "attachments": [
-      {
-        "text": "",
-        "fallback": "You are unable to choose a game",
-        "callback_id": "create_deadline",
-        "color": "#3AA3E3",
-        "attachment_type": "default",
-        "actions": [
-          {
-            "name": "option",
-            "text": "Yes",
-            "type": "button",
-            "value": "Yes"
-          },
-          {
-            "name": "option",
-            "text": "No",
-            "type": "button",
-            "value": "No"
-          }
-          
-        ]
-      }
-    ]
-  };
-  var options = {
-    'method': 'post',
-    'payload': JSON.stringify(payload)
-  };
-  var slackWebookURL = "https://hooks.slack.com/services/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"
-  var response = UrlFetchApp.fetch(slackWebookURL, options);
-}
+
 
 function sendCreateDeadline(trigger_id,channel){
   var options = getDashboardNamesDropdown();

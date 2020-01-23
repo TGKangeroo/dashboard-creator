@@ -201,12 +201,36 @@ function ifempty(value){
   
 }
 
-
-
-//Moves deadlines that have passed 5 days ago
-function moveDeadline(){
+//checks if the deadline reminders have been turned on
+function deadlinesInactive(){
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var generalSheet = ss.getSheetByName("General");
+  var contrlSheet= ss.getSheetByName("Control Panel")
+  
+  var dataRange = contrlSheet.getDataRange();
+  var data = dataRange.getValues();
+ 
+  for(var i = 1; i< data.length;i++){
+  var sections = data[i][2].split(",").length;
+    var sheet = ss.getSheetByName(data[i][0]);
+    if(data[i][9] == true){
+  moveDeadline(sheet);
+      
+    }
+  }
+   // checkDeadlines();
+    Logger.log('checked');
+  
+}
+
+function generalDashboardDelete(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet= ss.getSheetByName("General");
+moveDeadline(sheet);
+}
+//Moves deadlines that have passed 5 days ago
+function moveDeadline(sheet){
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var generalSheet =sheet;
   var lColumn = generalSheet.getMaxColumns();
   
   var dates = generalSheet.getRange(5,1,1,lColumn).getValues();
@@ -218,12 +242,16 @@ function moveDeadline(){
     Logger.log(dates[0][h]);
     if(new Date(dates[0][h])< today){
       Logger.log("made it");
-      moveColumn(h);
+      //moveColumn(h);
+      removeColumn(h,sheet);
     }
   }
   
 }
 
+function removeColumn(col,sheet){
+  sheet.deleteColumn(col+1);
+}
 //moves a column to the old deadlines sheet
 function moveColumn(iniCol) {
   // iniCol - Column of interest. (Integer)
